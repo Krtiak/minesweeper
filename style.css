@@ -1,0 +1,363 @@
+/* Základné nastavenia pre celú stránku */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Nastavenie fontu, pozadia a rozloženia tela stránky */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hlavička stránky s názvom hry */
+header {
+    width: 100%;
+    text-align: center;
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+header h1 {
+    font-size: 2.2em;
+    letter-spacing: 2px;
+    color: #f1c40f;
+    text-shadow: 0 2px 8px #0008;
+    margin: 0;
+}
+
+/* Hlavný kontajner, ktorý centrovane zobrazuje obsah */
+main.center-container {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+}
+
+/* Horný panel nad hracou plochou (miny, čas, úroveň) */
+#game-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 340px;
+    margin: 0 auto 10px auto;
+    padding: 0 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    height: 32px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Počet zostávajúcich mín */
+#mines-left {
+    color: #f1c40f;
+    min-width: 60px;
+    text-align: left;
+}
+
+/* Časomiera */
+#timer {
+    color: #2ecc40;
+    font-family: 'Consolas', monospace;
+    font-size: 1.15em;
+    min-width: 60px;
+    text-align: center;
+}
+
+/* Indikátor aktuálnej úrovne */
+#level-indicator {
+    color: #f39c12;
+    min-width: 80px;
+    text-align: right;
+}
+
+/* Kontajner pre hraciu plochu */
+#game {
+    display: inline-block;
+    margin: 12px auto 0 auto;
+    border-radius: 14px;
+    border: 2px solid #f1c40f;
+    box-shadow: 0 8px 32px #0006, 0 1.5px 0 #fff2 inset;
+    background: rgba(255,255,255,0.04);
+    padding: 8px;
+    max-width: 95vw;
+    max-height: 70vw;
+    overflow: auto;
+    transition: box-shadow 0.2s;
+}
+
+/* Kontajner pre tlačidlá (New Game, Pause) */
+.button-container {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Štýl tlačidiel */
+.button-container button {
+    background: linear-gradient(90deg, #f1c40f 60%, #f39c12 100%);
+    color: #222;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 28px;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px #0004;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    outline: none;
+}
+
+.button-container button:hover {
+    background: linear-gradient(90deg, #f39c12 60%, #f1c40f 100%);
+    transform: translateY(-2px) scale(1.04);
+}
+
+/* Spodná správa (výhra, prehra, upozornenia) */
+#message {
+    margin-top: 18px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #e74c3c;
+    min-height: 1.5em;
+    transition: color 0.3s;
+    text-align: center;
+    text-shadow: 0 1px 4px #0006;
+    letter-spacing: 1px;
+}
+
+#message.win {
+    color: #2ecc40;
+    text-shadow: 0 1px 8px #0006;
+}
+
+/* Jeden riadok hracieho poľa */
+.row {
+    display: flex;
+}
+
+/* Jedno políčko hracieho poľa */
+.cell {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(145deg, #3a3d40 60%, #232526 100%);
+    border: 2px solid #232526;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    box-shadow: 0 2px 8px #0003;
+    transition: background 0.15s, color 0.15s, box-shadow 0.2s;
+    margin: 1.5px;
+    position: relative;
+}
+
+/* Efekt pri stlačení políčka */
+.cell:active {
+    background: #232526;
+}
+
+/* Odhalené políčko */
+.cell.revealed {
+    background: linear-gradient(135deg, #f5f6fa 80%, #dcdde1 100%);
+    color: #222;
+    cursor: default;
+    box-shadow: 0 1px 2px #0002;
+    border: 2px solid #b2bec3;
+    animation: pop 0.18s;
+}
+
+/* Animácia "pop" pri odhalení políčka */
+@keyframes pop {
+    0% { transform: scale(0.96);}
+    100% { transform: scale(1);}
+}
+
+/* Políčko s mínou */
+.cell.mine {
+    background: linear-gradient(135deg, #e74c3c 80%, #c0392b 100%);
+    color: #fff;
+    animation: shake 0.18s;
+}
+
+/* Jemná animácia vybrácie pri odhalení míny */
+@keyframes shake {
+    0% { transform: translateX(0);}
+    20% { transform: translateX(-1px);}
+    40% { transform: translateX(1px);}
+    60% { transform: translateX(-0.5px);}
+    80% { transform: translateX(0.5px);}
+    100% { transform: translateX(0);}
+}
+
+/* Políčko označené vlajkou */
+.cell.flagged {
+    background: linear-gradient(135deg, #2980b9 80%, #273c75 100%);
+    color: #fff;
+}
+
+/* Odhalená mína */
+.cell.revealed.mine {
+    background: linear-gradient(135deg, #e74c3c 80%, #c0392b 100%);
+    color: #fff;
+}
+
+/* Horný panel ešte raz (kvôli gapu pre tlačidlo Pause) */
+#game-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 420px;
+    margin: 0 auto 10px auto;
+    padding: 0 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    height: 32px;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 8px;
+}
+
+/* Štýl tlačidla Pause */
+#pause-btn {
+    background: #444;
+    color: #fff;
+    border: 2px solid #f1c40f;
+    border-radius: 8px;
+    padding: 8px 24px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+}
+
+#pause-btn.paused {
+    background: #f1c40f;
+    color: #222;
+    border: 2px solid #fff;
+    outline: none;
+}
+
+/* Kontajner pre hraciu plochu a overlay */
+#game-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Overlay (prekrytie) pre správy v strede hry */
+#overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(30,30,30,0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: 14px;
+    transition: background 0.2s;
+}
+
+#overlay.hidden {
+    display: none;
+}
+
+/* Správa v overlayi */
+#overlay-message {
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 18px;
+    text-shadow: 0 2px 8px #000a;
+    text-align: center;
+}
+
+/* Overlay správa - prehra */
+#overlay-message.lose {
+    color: #e74c3c;
+    text-shadow: 0 1px 8px #0006;
+}
+
+/* Overlay správa - výhra */
+#overlay-message.win {
+    color: #2ecc40;
+    text-shadow: 0 1px 8px #0006;
+}
+
+/* Tlačidlo na prechod na ďalšiu úroveň */
+#next-level-btn {
+    background: linear-gradient(90deg, #f1c40f 60%, #f39c12 100%);
+    color: #222;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 32px;
+    font-size: 1.1em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px #0004;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    outline: none;
+}
+
+#next-level-btn:hover {
+    background: linear-gradient(90deg, #f39c12 60%, #f1c40f 100%);
+    transform: translateY(-2px) scale(1.04);
+}
+
+#next-level-btn.hidden {
+    display: none;
+}
+
+/* Farby čísel podľa počtu mín v okolí */
+.cell[data-num="1"] { color: #2980b9; }
+.cell[data-num="2"] { color: #27ae60; }
+.cell[data-num="3"] { color: #e67e22; }
+.cell[data-num="4"] { color: #8e44ad; }
+.cell[data-num="5"] { color: #c0392b; }
+.cell[data-num="6"] { color: #16a085; }
+.cell[data-num="7"] { color: #2d3436; }
+.cell[data-num="8"] { color: #636e72; }
+
+/* Responzívne zmenšenie políčok na menších obrazovkách */
+@media (max-width: 600px) {
+    .cell {
+        width: 7vw;
+        height: 7vw;
+        max-width: 18px;
+        max-height: 18px;
+        font-size: 0.95em;
+    }
+    #game {
+        max-width: 99vw;
+        max-height: 90vw;
+        padding: 4px;
+    }
+    header {
+        margin-top: 10px;
+    }
+    .button-container {
+        margin-top: 10px;
+    }
+    #message {
+        margin-top: 10px;
+    }
+}

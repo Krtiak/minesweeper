@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Minesweeper</title>
+    <!-- Pripojenie externého CSS súboru pre štýly hry -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Hlavička stránky s názvom hry -->
+    <header>
+        <h1>Minesweeper</h1>
+    </header>
+    <main class="center-container">
+        <!-- Horný panel nad hracou plochou: zobrazuje počet zostávajúcich mín, čas a aktuálnu úroveň -->
+        <div id="game-top-bar">
+            <div id="mines-left">Mines: 0</div> <!-- Počet mín, ktoré ešte treba označiť -->
+            <div id="timer">03:00</div>           <!-- Časomiera (odpočítava čas do konca hry) -->
+            <div id="level-indicator">Level 1/3</div> <!-- Aktuálna úroveň hry -->
+        </div>
+        <!-- Kontajner pre samotnú hraciu plochu a overlay (prekrytie) pre správy -->
+        <div id="game-container">
+            <div id="game"></div> <!-- Sem sa dynamicky generuje hracia plocha cez JavaScript -->
+            <!-- Overlay sa zobrazí pri výhre, prehre, pauze alebo po dokončení úrovne -->
+            <div id="overlay" class="hidden">
+                <div id="overlay-message"></div> <!-- Správa v strede obrazovky (výhra, prehra, pauza, atď.) -->
+                <button id="next-level-btn" class="hidden" onclick="nextLevel()">Next Level</button> <!-- Tlačidlo na prechod na ďalšiu úroveň -->
+            </div>
+        </div>
+        <!-- Tlačidlo na spustenie novej hry -->
+        <div class="button-container">
+            <button onclick="startGame()" id="new-game-btn">New Game</button>
+        </div>
+        <!-- Tlačidlo na pozastavenie a obnovenie hry -->
+        <div class="button-container">
+            <button id="pause-btn" onclick="togglePause()">Pause</button>
+        </div>
+        <!-- Spodná správa (napr. informácie o výhre, prehre, alebo iné upozornenia) -->
+        <div id="message"></div>
+    </main>
+    <!-- Pripojenie JavaScriptu, ktorý riadi logiku hry -->
+    <script src="script.js"></script>
+</body>
+</html>
