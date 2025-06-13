@@ -253,6 +253,8 @@ function checkWin() {
         if (currentLevel < 2) {
             showMessage(`Level ${currentLevel + 1}/3 complete!`, true);
             showOverlay(`Level ${currentLevel + 1}/3 complete!`, true, true);
+            clearInterval(timer);
+            timerRunning = false;
         } else {
             gameOver = true;
             revealAll();
@@ -332,6 +334,7 @@ function nextLevel() {
 
 // --- Pozastavenie a obnovenie hry ---
 function togglePause() {
+    if (!document.getElementById('overlay').classList.contains('hidden')) return;
     if (gameOver) return;
     paused = !paused;
     const pauseBtn = document.getElementById('pause-btn');
